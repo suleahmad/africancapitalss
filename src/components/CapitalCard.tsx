@@ -16,6 +16,10 @@ export default function CapitalCard({ country }: CapitalCardProps) {
           <span className={styles.label}>Mji Mkuu:</span>
           <span className={`${styles.capital} text-gradient`}>{country.capital}</span>
         </div>
+        <div className={styles.languageSection}>
+          <span className={styles.label}>Lugha:</span>
+          <span className={`${styles.language} text-gradient`}>{country.language}</span>
+        </div>
         <p className={styles.description}>{country.description}</p>
       </div>
     </div>

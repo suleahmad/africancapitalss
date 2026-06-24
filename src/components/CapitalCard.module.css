@@ -36,6 +36,13 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.languageSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-bottom: 1rem;
 }
 
@@ -48,6 +55,11 @@
 .capital {
   font-size: 1.1rem;
   font-weight: 700;
+}
+
+.language {
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .description {

@@ -16,7 +16,7 @@ export default function Home() {
     );
   });
 
-  return (
+  return (  
     <main className={styles.main}>
       <header className={styles.header}>
         <div className={styles.heroContent}>
