@@ -4,9 +4,11 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import { africanCountries } from "../data";
 import CapitalCard from "../components/CapitalCard";
+import SignUpModal from "../components/SignUpModal";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [showSignUp, setShowSignUp] = useState(false);
 
   const filteredCountries = africanCountries.filter((country) => {
     const searchLower = searchTerm.toLowerCase();
@@ -30,9 +32,16 @@ export default function Home() {
           />
         </div>
         <div className={styles.navActions}>
-          <button className={styles.joinBtn}>Join / Sign Up</button>
+          <button 
+            className={styles.joinBtn} 
+            onClick={() => setShowSignUp(true)}
+          >
+            Join / Sign Up
+          </button>
         </div>
       </nav>
+
+      {showSignUp && <SignUpModal onClose={() => setShowSignUp(false)} />}
 
       <header className={styles.header}>
         <div className={styles.heroContent}>
