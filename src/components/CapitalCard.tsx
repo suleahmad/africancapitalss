@@ -9,7 +9,16 @@ interface CapitalCardProps {
 export default function CapitalCard({ country }: CapitalCardProps) {
   return (
     <div className={`glass ${styles.card}`}>
-      <div className={styles.flag}>{country.flag}</div>
+      <div className={styles.imageContainer}>
+        {/* Tunatumia picha kutoka loremflickr au picsum yenye mbegu (seed) ya jina la mji mkuu */}
+        <img 
+          src={`https://loremflickr.com/600/400/${encodeURIComponent(country.capital)},city,modern/all`} 
+          alt={`Picha ya kisasa ya ${country.capital}`} 
+          className={styles.image}
+          loading="lazy"
+        />
+        <div className={styles.flagOverlay}>{country.flag}</div>
+      </div>
       <div className={styles.content}>
         <h2 className={styles.countryName}>{country.name}</h2>
         <div className={styles.capitalSection}>
