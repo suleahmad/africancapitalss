@@ -1,16 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./page.module.css";
-import { africanCountries } from "../data";
+import { africanCountries as localCountries, CountryData } from "../data";
 import CapitalCard from "../components/CapitalCard";
 import SignUpModal from "../components/SignUpModal";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showSignUp, setShowSignUp] = useState(false);
+  const [countries, setCountries] = useState<CountryData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredCountries = africanCountries.filter((country) => {
+  useEffect(() => {
+    // Fetch from live server
+    fetch("https://africancapitalss.onrender.com/api/capitals")
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then((data) => {
+        // If the backend returns an array, use it
+        if (Array.isArray(data) && data.length > 0) {
+          setCountries(data);
+        } else {
+          // Fallback to local if data is not an array (e.g. backend not fully set up)
+          setCountries(localCountries);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch from live server, using local data", err);
+        setCountries(localCountries); // Fallback to local data
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  const filteredCountries = countries.filter((country) => {
     const searchLower = searchTerm.toLowerCase();
     return (
       country.name.toLowerCase().includes(searchLower) ||
@@ -61,7 +88,12 @@ export default function Home() {
       </header>
 
       <section className={styles.gridContainer}>
-        {filteredCountries.length > 0 ? (
+        {isLoading ? (
+          <div className={styles.noResults}>
+            <h2>Loading...</h2>
+            <p>Fetching data from live server...</p>
+          </div>
+        ) : filteredCountries.length > 0 ? (
           <div className={styles.grid}>
             {filteredCountries.map((country) => (
               <CapitalCard key={country.id} country={country} />

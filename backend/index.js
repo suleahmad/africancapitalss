@@ -7,6 +7,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const africanCountries = require('./data');
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -19,6 +21,11 @@ app.get('/', (req, res) => {
 // Example API Route
 app.get('/api/status', (req, res) => {
   res.json({ status: 'success', message: 'Backend is connected to the frontend!' });
+});
+
+// Capitals Endpoint
+app.get('/api/capitals', (req, res) => {
+  res.json(africanCountries);
 });
 
 app.listen(PORT, () => {
