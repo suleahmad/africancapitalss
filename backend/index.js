@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 5000;
 
 const africanCountries = require('./data');
 
+// In-memory user store (For demo purposes)
+const users = [];
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -26,6 +29,27 @@ app.get('/api/status', (req, res) => {
 // Capitals Endpoint
 app.get('/api/capitals', (req, res) => {
   res.json(africanCountries);
+});
+
+// Register Endpoint
+app.post('/api/register', (req, res) => {
+  const { name, email, password } = req.body;
+  
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Tafadhali jaza sehemu zote (All fields are required)' });
+  }
+  
+  // Check if user already exists
+  const userExists = users.find(u => u.email === email);
+  if (userExists) {
+    return res.status(400).json({ error: 'Barua pepe hii tayari inatumika (User already exists)' });
+  }
+  
+  // Create user
+  const newUser = { id: Date.now().toString(), name, email, password };
+  users.push(newUser);
+  
+  res.status(201).json({ message: 'Usajili umekamilika kikamilifu!', user: { id: newUser.id, name: newUser.name, email: newUser.email } });
 });
 
 app.listen(PORT, () => {

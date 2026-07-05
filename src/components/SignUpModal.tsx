@@ -9,12 +9,42 @@ export default function SignUpModal({ onClose }: SignUpModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [isError, setIsError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, handle registration here
-    alert('Registration successful for ' + name + '!');
-    onClose();
+    setIsLoading(true);
+    setMessage('');
+    setIsError(false);
+
+    try {
+      const response = await fetch('https://africancapitalss.onrender.com/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setIsError(true);
+        setMessage(data.error || 'Usajili umeshindwa (Registration failed)');
+      } else {
+        setIsError(false);
+        setMessage(data.message || 'Usajili umekamilika kikamilifu!');
+        // Funga dirisha baada ya sekunde 2
+        setTimeout(() => {
+          onClose();
+        }, 2000);
+      }
+    } catch (error) {
+      setIsError(true);
+      setMessage('Kuna tatizo la mtandao (Network error)');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -23,6 +53,12 @@ export default function SignUpModal({ onClose }: SignUpModalProps) {
         <button className={styles.closeBtn} onClick={onClose}>&times;</button>
         <h2 className={styles.title}>Create an Account</h2>
         <p className={styles.subtitle}>Join us to discover more about Africa.</p>
+        
+        {message && (
+          <div className={isError ? styles.errorMessage : styles.successMessage}>
+            {message}
+          </div>
+        )}
         
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
@@ -59,7 +95,9 @@ export default function SignUpModal({ onClose }: SignUpModalProps) {
             />
           </div>
           
-          <button type="submit" className={styles.submitBtn}>Sign Up</button>
+          <button type="submit" className={styles.submitBtn} disabled={isLoading}>
+            {isLoading ? 'Inasajili... (Signing Up...)' : 'Sign Up'}
+          </button>
         </form>
       </div>
     </div>
