@@ -1,16 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
 
 dotenv.config();
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Connected to MongoDB (AfricanCapitals)'))
+  .catch((error) => console.error('Error connecting to MongoDB:', error));
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 const africanCountries = require('./data');
-
-// In-memory user store (For demo purposes)
-const users = [];
+const User = require('./models/User');
 
 // Middleware
 app.use(cors());
@@ -32,24 +36,29 @@ app.get('/api/capitals', (req, res) => {
 });
 
 // Register Endpoint
-app.post('/api/register', (req, res) => {
+app.post('/api/register', async (req, res) => {
   const { name, email, password } = req.body;
   
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Tafadhali jaza sehemu zote (All fields are required)' });
   }
   
-  // Check if user already exists
-  const userExists = users.find(u => u.email === email);
-  if (userExists) {
-    return res.status(400).json({ error: 'Barua pepe hii tayari inatumika (User already exists)' });
+  try {
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ error: 'Barua pepe hii tayari inatumika (User already exists)' });
+    }
+    
+    // Create user
+    const newUser = new User({ name, email, password });
+    await newUser.save();
+    
+    res.status(201).json({ message: 'Usajili umekamilika kikamilifu!', user: { id: newUser._id, name: newUser.name, email: newUser.email } });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Hitilafu imetokea (Server error)' });
   }
-  
-  // Create user
-  const newUser = { id: Date.now().toString(), name, email, password };
-  users.push(newUser);
-  
-  res.status(201).json({ message: 'Usajili umekamilika kikamilifu!', user: { id: newUser.id, name: newUser.name, email: newUser.email } });
 });
 
 app.listen(PORT, () => {
