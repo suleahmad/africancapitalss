@@ -10,10 +10,10 @@ export default function CapitalCard({ country }: CapitalCardProps) {
   return (
     <div className={`glass ${styles.card}`}>
       <div className={styles.imageContainer}>
-        {/* Tunatumia picha kutoka loremflickr au picsum yenye mbegu (seed) ya jina la mji mkuu */}
+        {/* Fetching only skyscraper/architecture images */}
         <img 
-          src={`https://loremflickr.com/600/400/${encodeURIComponent(country.capital)},city,modern/all`} 
-          alt={`Picha ya kisasa ya ${country.capital}`} 
+          src={`https://loremflickr.com/600/400/skyscraper,architecture/all?lock=${country.id}`} 
+          alt={`Modern picture of ${country.capital}`} 
           className={styles.image}
           loading="lazy"
         />
@@ -22,11 +22,11 @@ export default function CapitalCard({ country }: CapitalCardProps) {
       <div className={styles.content}>
         <h2 className={styles.countryName}>{country.name}</h2>
         <div className={styles.capitalSection}>
-          <span className={styles.label}>Mji Mkuu:</span>
+          <span className={styles.label}>Capital:</span>
           <span className={`${styles.capital} text-gradient`}>{country.capital}</span>
         </div>
         <div className={styles.languageSection}>
-          <span className={styles.label}>Lugha:</span>
+          <span className={styles.label}>Language:</span>
           <span className={`${styles.language} text-gradient`}>{country.language}</span>
         </div>
         <p className={styles.description}>{country.description}</p>

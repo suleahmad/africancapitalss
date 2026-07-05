@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Miji Mikuu ya Afrika | African Capitals",
-  description: "Gundua miji mikuu yote ya barani Afrika kwa urahisi ukiwa na muonekano wa kisasa. Jifunze nchi na miji mikuu yake leo.",
-  keywords: ["afrika", "miji mikuu", "nchi", "kiswahili", "elimika"],
+  title: "African Capitals | Explore and Learn",
+  description: "Discover all the capital cities of Africa easily with a modern interface. Learn about countries and their capitals today.",
+  keywords: ["africa", "capitals", "countries", "english", "education"],
 };
 
 export default function RootLayout({
