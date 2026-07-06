@@ -6,6 +6,7 @@ import { africanCountries as localCountries, CountryData } from "../data";
 import CapitalCard from "../components/CapitalCard";
 import SignUpModal from "../components/SignUpModal";
 import LoginModal from "../components/LoginModal";
+import CountryModal from "../components/CountryModal";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,6 +15,7 @@ export default function Home() {
   const [isRegistered, setIsRegistered] = useState(false);
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
 
   useEffect(() => {
     // Fetch from live server
@@ -130,7 +132,11 @@ export default function Home() {
         ) : filteredCountries.length > 0 ? (
           <div className={styles.grid}>
             {filteredCountries.map((country) => (
-              <CapitalCard key={country.id} country={country} />
+              <CapitalCard 
+                key={country.id} 
+                country={country} 
+                onClick={() => setSelectedCountry(country)}
+              />
             ))}
           </div>
         ) : (
@@ -146,6 +152,13 @@ export default function Home() {
           Made with <span style={{ color: "#ef4444" }}>❤</span> for the African continent.
         </p>
       </footer>
+
+      {selectedCountry && (
+        <CountryModal 
+          country={selectedCountry} 
+          onClose={() => setSelectedCountry(null)} 
+        />
+      )}
     </main>
   );
 }

@@ -4,11 +4,12 @@ import { CountryData } from "../data";
 
 interface CapitalCardProps {
   country: CountryData;
+  onClick: () => void;
 }
 
-export default function CapitalCard({ country }: CapitalCardProps) {
+export default function CapitalCard({ country, onClick }: CapitalCardProps) {
   return (
-    <div className={`glass ${styles.card}`}>
+    <div className={`glass ${styles.card}`} onClick={onClick} style={{ cursor: 'pointer' }}>
       <div className={styles.imageContainer}>
         {/* Fetching only skyscraper/architecture images */}
         <img 
