@@ -33,7 +33,9 @@ export default function Home() {
             return {
               ...serverCountry,
               history: serverCountry.history || localCountry?.history,
-              currency: serverCountry.currency || localCountry?.currency
+              currency: serverCountry.currency || localCountry?.currency,
+              firstPresident: serverCountry.firstPresident || localCountry?.firstPresident,
+              independenceYear: serverCountry.independenceYear || localCountry?.independenceYear
             };
           });
           setCountries(mergedData);

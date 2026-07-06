@@ -24,6 +24,14 @@ export default function CountryModal({ country, onClose }: CountryModalProps) {
             <span className={styles.value}>{country.capital}</span>
           </div>
           <div className={styles.infoItem}>
+            <span className={styles.label}>Uhuru (Independence):</span>
+            <span className={styles.value}>{country.independenceYear || 'N/A'}</span>
+          </div>
+          <div className={styles.infoItem}>
+            <span className={styles.label}>Rais wa Kwanza:</span>
+            <span className={styles.value}>{country.firstPresident || 'N/A'}</span>
+          </div>
+          <div className={styles.infoItem}>
             <span className={styles.label}>Lugha (Language):</span>
             <span className={styles.value}>{country.language}</span>
           </div>
