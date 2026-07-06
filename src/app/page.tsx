@@ -5,10 +5,12 @@ import styles from "./page.module.css";
 import { africanCountries as localCountries, CountryData } from "../data";
 import CapitalCard from "../components/CapitalCard";
 import SignUpModal from "../components/SignUpModal";
+import LoginModal from "../components/LoginModal";
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showSignUp, setShowSignUp] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const [isRegistered, setIsRegistered] = useState(false);
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,12 +62,29 @@ export default function Home() {
           />
         </div>
         <div className={styles.navActions}>
-          {!isRegistered && (
+          {!isRegistered ? (
+            <>
+              <button 
+                className={styles.joinBtn} 
+                onClick={() => setShowLogin(true)}
+                style={{ marginRight: '10px', background: 'transparent', border: '1px solid #3b82f6', color: '#3b82f6' }}
+              >
+                Login
+              </button>
+              <button 
+                className={styles.joinBtn} 
+                onClick={() => setShowSignUp(true)}
+              >
+                Sign Up
+              </button>
+            </>
+          ) : (
             <button 
               className={styles.joinBtn} 
-              onClick={() => setShowSignUp(true)}
+              onClick={() => setIsRegistered(false)}
+              style={{ background: '#ef4444' }}
             >
-              Join / Sign Up
+              Log Out
             </button>
           )}
         </div>
@@ -74,6 +93,13 @@ export default function Home() {
       {showSignUp && (
         <SignUpModal 
           onClose={() => setShowSignUp(false)} 
+          onSuccess={() => setIsRegistered(true)}
+        />
+      )}
+
+      {showLogin && (
+        <LoginModal 
+          onClose={() => setShowLogin(false)} 
           onSuccess={() => setIsRegistered(true)}
         />
       )}
