@@ -9,6 +9,7 @@ import SignUpModal from "../components/SignUpModal";
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showSignUp, setShowSignUp] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
   const [countries, setCountries] = useState<CountryData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,16 +60,23 @@ export default function Home() {
           />
         </div>
         <div className={styles.navActions}>
-          <button 
-            className={styles.joinBtn} 
-            onClick={() => setShowSignUp(true)}
-          >
-            Join / Sign Up
-          </button>
+          {!isRegistered && (
+            <button 
+              className={styles.joinBtn} 
+              onClick={() => setShowSignUp(true)}
+            >
+              Join / Sign Up
+            </button>
+          )}
         </div>
       </nav>
 
-      {showSignUp && <SignUpModal onClose={() => setShowSignUp(false)} />}
+      {showSignUp && (
+        <SignUpModal 
+          onClose={() => setShowSignUp(false)} 
+          onSuccess={() => setIsRegistered(true)}
+        />
+      )}
 
       <header className={styles.header}>
         <div className={styles.heroContent}>

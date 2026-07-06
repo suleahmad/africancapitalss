@@ -3,9 +3,10 @@ import styles from './SignUpModal.module.css';
 
 interface SignUpModalProps {
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-export default function SignUpModal({ onClose }: SignUpModalProps) {
+export default function SignUpModal({ onClose, onSuccess }: SignUpModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -34,6 +35,9 @@ export default function SignUpModal({ onClose }: SignUpModalProps) {
       } else {
         setIsError(false);
         setMessage(data.message || 'Usajili umekamilika kikamilifu!');
+        if (onSuccess) {
+          onSuccess();
+        }
         // Funga dirisha baada ya sekunde 2
         setTimeout(() => {
           onClose();
