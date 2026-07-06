@@ -27,7 +27,16 @@ export default function Home() {
       .then((data) => {
         // If the backend returns an array, use it
         if (Array.isArray(data) && data.length > 0) {
-          setCountries(data);
+          // Merge with local data to ensure we have history and currency even if backend is delayed
+          const mergedData = data.map(serverCountry => {
+            const localCountry = localCountries.find(c => c.id === serverCountry.id);
+            return {
+              ...serverCountry,
+              history: serverCountry.history || localCountry?.history,
+              currency: serverCountry.currency || localCountry?.currency
+            };
+          });
+          setCountries(mergedData);
         } else {
           // Fallback to local if data is not an array (e.g. backend not fully set up)
           setCountries(localCountries);
